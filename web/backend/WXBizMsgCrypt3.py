@@ -5,16 +5,17 @@
 @copyright: Copyright (c) 1998-2014 Tencent Inc.
 
 """
+import base64
+import hashlib
 # ------------------------------------------------------------------------
 import logging
-import base64
 import random
-import hashlib
-import time
-import struct
-from Crypto.Cipher import AES
-import xml.etree.cElementTree as ET
 import socket
+import struct
+import time
+import xml.etree.cElementTree as ET
+
+from Crypto.Cipher import AES
 
 # Description:定义错误码含义
 #########################################################################
@@ -30,7 +31,6 @@ WXBizMsgCrypt_IllegalBuffer = -40008
 WXBizMsgCrypt_EncodeBase64_Error = -40009
 WXBizMsgCrypt_DecodeBase64_Error = -40010
 WXBizMsgCrypt_GenReturnXml_Error = -40011
-
 
 """
 关于Crypto.Cipher模块，ImportError: No module named 'Crypto'解决方案
@@ -51,7 +51,8 @@ def throw_exception(message, exception_class=FormatException):
 class SHA1:
     """计算企业微信的消息签名接口"""
 
-    def getSHA1(self, token, timestamp, nonce, encrypt):
+    @staticmethod
+    def getSHA1(token, timestamp, nonce, encrypt):
         """用SHA1算法生成安全签名
         @param token:  票据
         @param timestamp: 时间戳
@@ -82,7 +83,8 @@ class XMLParse:
 <Nonce><![CDATA[%(nonce)s]]></Nonce>
 </xml>"""
 
-    def extract(self, xmltext):
+    @staticmethod
+    def extract(xmltext):
         """提取出xml数据包中的加密消息
         @param xmltext: 待提取的xml字符串
         @return: 提取出的加密消息字符串
@@ -114,7 +116,7 @@ class XMLParse:
         return resp_xml
 
 
-class PKCS7Encoder():
+class PKCS7Encoder:
     """提供基于PKCS7算法的加解密接口"""
 
     block_size = 32
@@ -133,7 +135,8 @@ class PKCS7Encoder():
         pad = chr(amount_to_pad)
         return text + (pad * amount_to_pad).encode()
 
-    def decode(self, decrypted):
+    @staticmethod
+    def decode(decrypted):
         """删除解密后明文的补位字符
         @param decrypted: 解密后的明文
         @return: 删除补位字符后的明文
@@ -157,6 +160,7 @@ class Prpcrypt(object):
     def encrypt(self, text, receiveid):
         """对明文进行加密
         @param text: 需要加密的明文
+        @param receiveid: receiveid
         @return: 加密得到的字符串
         """
         # 16位随机字符串添加到明文开头
@@ -180,6 +184,7 @@ class Prpcrypt(object):
     def decrypt(self, text, receiveid):
         """对解密后的明文进行补位删除
         @param text: 密文
+        @param receiveid: receiveid
         @return: 删除填充补位后的明文
         """
         try:
@@ -209,7 +214,8 @@ class Prpcrypt(object):
             return WXBizMsgCrypt_ValidateCorpid_Error, None
         return 0, xml_content
 
-    def get_random_str(self):
+    @staticmethod
+    def get_random_str():
         """ 随机生成16位字符串
         @return: 16位字符串
         """
@@ -222,7 +228,8 @@ class WXBizMsgCrypt(object):
         try:
             self.key = base64.b64decode(sEncodingAESKey + "=")
             assert len(self.key) == 32
-        except:
+        except Exception as err:
+            print(str(err))
             throw_exception("[error]: EncodingAESKey unvalid !", FormatException)
             # return WXBizMsgCrypt_IllegalAesKey,None
         self.m_sToken = sToken

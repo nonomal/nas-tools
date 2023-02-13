@@ -1,81 +1,113 @@
 import logging
 import os
+import re
 import threading
-from logging.handlers import TimedRotatingFileHandler
-from config import LOG_LEVEL, Config
+import time
+from collections import deque
+from html import escape
+from logging.handlers import RotatingFileHandler
 
+from config import Config
+
+logging.getLogger('werkzeug').setLevel(logging.ERROR)
 lock = threading.Lock()
+LOG_QUEUE = deque(maxlen=200)
+LOG_INDEX = 0
 
 
 class Logger:
-    __instance = None
+    logger = None
+    __instance = {}
     __config = None
 
-    def __init__(self):
-        self.logger = logging.Logger(__name__)
-        self.logger.setLevel(level=LOG_LEVEL)
+    __loglevels = {
+        "info": logging.INFO,
+        "debug": logging.DEBUG,
+        "error": logging.ERROR
+    }
+
+    def __init__(self, module):
+        self.logger = logging.getLogger(module)
         self.__config = Config()
-        app = self.__config.get_config('app')
-        if app:
-            logtype = app.get('logtype', 'console')
-            if logtype:
-                logtype = logtype.upper()
-            else:
-                logtype = "CONSOLE"
-        else:
-            logtype = 'CONSOLE'
-        if logtype == "FILE":
+        logtype = self.__config.get_config('app').get('logtype') or "console"
+        loglevel = self.__config.get_config('app').get('loglevel') or "info"
+        self.logger.setLevel(level=self.__loglevels.get(loglevel))
+        if logtype == "server":
+            logserver = self.__config.get_config('app').get('logserver', '').split(':')
+            if logserver:
+                logip = logserver[0]
+                if len(logserver) > 1:
+                    logport = int(logserver[1] or '514')
+                else:
+                    logport = 514
+                log_server_handler = logging.handlers.SysLogHandler((logip, logport),
+                                                                    logging.handlers.SysLogHandler.LOG_USER)
+                log_server_handler.setFormatter(logging.Formatter('%(filename)s: %(message)s'))
+                self.logger.addHandler(log_server_handler)
+        elif logtype == "file":
             # 记录日志到文件
-            logpath = app.get('logpath')
-            if not os.path.exists(logpath):
-                os.makedirs(logpath)
-            log_file_handler = TimedRotatingFileHandler(filename=logpath + "/" + __name__ + ".txt", when="D",
-                                                        interval=1,
-                                                        backupCount=2)
-            formatter = logging.Formatter(
-                '%(asctime)s\tFile \"%(filename)s\",line %(lineno)s\t%(levelname)s: %(message)s')
-            log_file_handler.setFormatter(formatter)
-            self.logger.addHandler(log_file_handler)
-        elif logtype == "SERVER":
-            logserver = app.get('logserver')
-            logip = logserver.split(':')[0]
-            logport = int(logserver.split(':')[1])
-            log_server_handler = logging.handlers.SysLogHandler((logip, logport),
-                                                                logging.handlers.SysLogHandler.LOG_USER)
-            formatter = logging.Formatter('%(filename)s: %(message)s')
-            log_server_handler.setFormatter(formatter)
-            self.logger.addHandler(log_server_handler)
-        else:
-            # 记录日志到终端
-            formatter = logging.Formatter('%(asctime)s\t%(levelname)s: %(message)s')
-            log_console_handler = logging.StreamHandler()
-            log_console_handler.setFormatter(formatter)
-            self.logger.addHandler(log_console_handler)
+            logpath = os.environ.get('NASTOOL_LOG') or self.__config.get_config('app').get('logpath') or ""
+            if logpath:
+                if not os.path.exists(logpath):
+                    os.makedirs(logpath)
+                log_file_handler = RotatingFileHandler(filename=os.path.join(logpath, module + ".txt"),
+                                                       maxBytes=5 * 1024 * 1024,
+                                                       backupCount=3,
+                                                       encoding='utf-8')
+                log_file_handler.setFormatter(logging.Formatter('%(asctime)s\t%(levelname)s: %(message)s'))
+                self.logger.addHandler(log_file_handler)
+        # 记录日志到终端
+        log_console_handler = logging.StreamHandler()
+        log_console_handler.setFormatter(logging.Formatter('%(asctime)s\t%(levelname)s: %(message)s'))
+        self.logger.addHandler(log_console_handler)
 
     @staticmethod
-    def get_instance():
-        if Logger.__instance:
-            return Logger.__instance
-        try:
-            lock.acquire()
-            if not Logger.__instance:
-                Logger.__instance = Logger()
-        finally:
-            lock.release()
-        return Logger.__instance
+    def get_instance(module):
+        if not module:
+            module = "run"
+        if Logger.__instance.get(module):
+            return Logger.__instance.get(module)
+        with lock:
+            Logger.__instance[module] = Logger(module)
+        return Logger.__instance.get(module)
 
 
-def debug(text):
-    return Logger.get_instance().logger.debug(text)
+def __append_log_queue(level, text):
+    global LOG_INDEX, LOG_QUEUE
+    with lock:
+        text = escape(text)
+        if text.startswith("【"):
+            source = re.findall(r"(?<=【).*?(?=】)", text)[0]
+            text = text.replace(f"【{source}】", "")
+        else:
+            source = "System"
+        LOG_QUEUE.append({
+            "time": time.strftime('%H:%M:%S', time.localtime(time.time())),
+            "level": level,
+            "source": source,
+            "text": text})
+        LOG_INDEX += 1
 
 
-def info(text):
-    return Logger.get_instance().logger.info(text)
+def debug(text, module=None):
+    return Logger.get_instance(module).logger.debug(text)
 
 
-def error(text):
-    return Logger.get_instance().logger.error(text)
+def info(text, module=None):
+    __append_log_queue("INFO", text)
+    return Logger.get_instance(module).logger.info(text)
 
 
-def warn(text):
-    return Logger.get_instance().logger.warning(text)
+def error(text, module=None):
+    __append_log_queue("ERROR", text)
+    return Logger.get_instance(module).logger.error(text)
+
+
+def warn(text, module=None):
+    __append_log_queue("WARN", text)
+    return Logger.get_instance(module).logger.warning(text)
+
+
+def console(text):
+    __append_log_queue("INFO", text)
+    print(text)

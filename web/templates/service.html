@@ -1,562 +1,403 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta content="white" name="apple-mobile-web-app-status-bar-style" />
-    <title>服务 - NASTool</title>
-    <link rel="shortcut icon" href="../static/favicon.ico" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="../static/img/logo.png">
-    <!-- CSS files -->
-    <link href="../static/css/tabler.min.css" rel="stylesheet"/>
-    <style type="text/css" media="screen">
-		#editor {
-			width:100%;
-			height:500px;
-		}
-	</style>
-  </head>
-  <body  class=" layout-boxed">
-    <div class="page">
-      <header class="navbar navbar-expand-md navbar-light d-print-none">
-        <div class="container-xl">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-            <a href="/home">
-              <img src="../static/img/logo.svg" width="110" height="32" alt="NASTool" class="navbar-brand-image">
-            </a>
-          </h1>
-          <div class="navbar-nav flex-row order-md-last">
-            <div class="nav-item d-none d-md-flex me-3">
-              <div class="btn-list">
-                <a href="https://github.com/jxxghp/nas-tools" class="btn" target="_blank" rel="noreferrer">
-                  <!-- Download SVG icon from http://tabler-icons.io/i/brand-github -->
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" /></svg>
-                  Source code
-                </a>
-              </div>
-            </div>
-            <div class="d-none d-md-flex">
-              <a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="暗黑风格" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                <!-- Download SVG icon from http://tabler-icons.io/i/moon -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /></svg>
-              </a>
-              <a href="?theme=light" class="nav-link px-0 hide-theme-light" title="明亮风格" data-bs-toggle="tooltip" data-bs-placement="bottom">
-                <!-- Download SVG icon from http://tabler-icons.io/i/sun -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="4" /><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></svg>
-              </a>
-            </div>
-          </div>
-          <div class="collapse navbar-collapse" id="navbar-menu">
-            <div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
-              <ul class="navbar-nav">
-                <li class="nav-item">
-                  <a class="nav-link" href="/home" >
-                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="5 12 3 12 12 3 21 12 19 12" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg>
-                    </span>
-                    <span class="nav-link-title">
-                      开始
-                    </span>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/search">
-                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="12 3 20 7.5 20 16.5 12 21 4 16.5 4 7.5 12 3" /><line x1="12" y1="12" x2="20" y2="7.5" /><line x1="12" y1="12" x2="12" y2="21" /><line x1="12" y1="12" x2="4" y2="7.5" /><line x1="16" y1="5.25" x2="8" y2="9.75" /></svg>
-                    </span>
-                    <span class="nav-link-title">
-                      影视搜索
-                    </span>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/sites" >
-                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="9 11 12 14 20 6" /><path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" /></svg>
-                    </span>
-                    <span class="nav-link-title">
-                      站点订阅
-                    </span>
-                  </a>
-                </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
-                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/star -->
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
-                    </span>
-                    <span class="nav-link-title">
-                      推荐
-                    </span>
-                  </a>
-                  <div class="dropdown-menu">
-                    <a class="dropdown-item" href="/recommend?t=hm">
-                      热门电影
-                    </a>
-                    <a class="dropdown-item" href="/recommend?t=ht">
-                      热门电视剧
-                    </a>
-                    <a class="dropdown-item" href="/recommend?t=nm">
-                      最新电影
-                    </a>
-                    <a class="dropdown-item" href="/recommend?t=nt">
-                      最新电视剧
-                    </a>
-                  </div>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/download" >
-                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/layout-2 -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-download" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                       <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                       <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"></path>
-                       <polyline points="7 11 12 16 17 11"></polyline>
-                       <line x1="12" y1="4" x2="12" y2="16"></line>
-                    </svg>
-                    </span>
-                    <span class="nav-link-title">
-                      下载
-                    </span>
-                  </a>
-                </li>
-				<li class="nav-item active">
-                  <a class="nav-link" href="/service" >
-                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/layout-2 -->
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><rect x="4" y="4" width="6" height="5" rx="2" /><rect x="4" y="13" width="6" height="7" rx="2" /><rect x="14" y="4" width="6" height="7" rx="2" /><rect x="14" y="15" width="6" height="5" rx="2" /></svg>
-                    </span>
-                    <span class="nav-link-title">
-                      服务
-                    </span>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/history" >
-                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/layout-2 -->
-                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-history" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                         <polyline points="12 8 12 12 14 14"></polyline>
-                         <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5"></path>
-                      </svg>
-                    </span>
-                    <span class="nav-link-title">
-                      历史
-                    </span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </header>
-      <div class="page-wrapper">
-        <div class="container-xl">
-          <!-- Page title -->
-          <div class="page-header d-print-none">
-            <div class="row align-items-center">
-              <div class="col">
-                <h2 class="page-title">
-                  服务
-                </h2>
-              </div>
-            </div>
-          </div>
-        </div>        
-		<!-- 业务页面代码 -->
-        {% if Count > 0 %}
-        <div class="page-body">
-          <div class="container-xl">
-            <div class="row row-deck row-cards">
-			  <div class="col-12">
-                <div class="row row-cards">
-                  {% for Scheduler in SchedulerTasks %}
-                  <div class="col-sm-6 col-lg-3">
-                    <div class="card card-sm">
-                      <div class="card-body">
-                        <div class="row align-items-center">
-                          <div class="col-auto">
-                            <span class="bg-{{ Scheduler.color }} text-white avatar">
-                              {{ Scheduler.svg|safe }}
-                            </span>
-                          </div>
-                          <div class="col">
-                            <div class="font-weight-medium">
-                              <a href="javascript:show_service_modal('{{ Scheduler.id }}','{{ Scheduler.name }}')" id="service_btn">{{ Scheduler.name }}</a>
-                            </div>
-                            <div class="text-muted">
-                              {{ Scheduler.time }}
-                            </div>
-                          </div>
-                          {% if Scheduler.state == "ON" %}
-                          <div class="col-auto align-self-center">
-                              <div class="badge bg-primary"></div>
-                          </div>
-                          {% endif %}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  {% endfor %}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        {% else %}
-        <div class="page-wrapper">
-        <div class="container-xl">
-        </div>
-        <div class="page-body">
-          <div class="container-xl d-flex flex-column justify-content-center">
-            <div class="empty">
-              <div class="empty-img"><img src="./static/img/sign_in.svg" height="128"  alt="">
-              </div>
-              <p class="empty-title">没有数据</p>
-              <p class="empty-subtitle text-muted">
-                没有开启任何后台服务。
-              </p>
-            </div>
-          </div>
-        </div>
-        {% endif %}
-        <footer class="footer footer-transparent d-print-none">
-          <div class="container-xl">
-            <div class="row text-center align-items-center flex-row-reverse">
-              <div class="col-12 col-lg-auto mt-3 mt-lg-0">
-                <ul class="list-inline list-inline-dots mb-0">
-                  <li class="list-inline-item">
-                    Copyright &copy; 2022
-                    <a href="." class="link-secondary">NASTool</a>.
-                    All rights reserved.
-                  </li>
-                  <li class="list-inline-item">
-                    {{ AppVersion }}
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </footer>
+<div class="container-xl">
+  <!-- Page title -->
+  <div class="page-header d-print-none">
+    <div class="row align-items-center">
+      <div class="col">
+        <h2 class="page-title">
+          服务
+        </h2>
       </div>
     </div>
-    <div class="modal modal-blur fade" id="service-modal" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-body">
-            <div class="modal-title">确认提示</div>
-            <div id="service_start_message">是否确定立即运行服务？</div>
-          </div>
-          <div class="modal-footer">
-            <input type="hidden" id="service_start_id" />
-            <button type="button" class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal">取消</button>
-            <button type="button" class="btn btn-danger" id="service_start_btn">确定</button>
+  </div>
+</div>
+<!-- 业务页面代码 -->
+{% if Count > 0 %}
+<div class="page-body">
+  <div class="container-xl">
+    <div class="d-grid gap-3 grid-normal-card">
+      {% for Scheduler in SchedulerTasks %}
+      <div class="card card-sm card-link-pop">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col-auto">
+              <span class="bg-{{ Scheduler.color }} text-white avatar">
+                {{ Scheduler.svg|safe }}
+              </span>
+            </div>
+            <div class="col">
+              <div class="font-weight-medium">
+                <a href="javascript:show_service_modal('{{ Scheduler.id }}','{{ Scheduler.name }}')"
+                  id="service_btn">{{ Scheduler.name }}</a>
+              </div>
+              <div class="text-muted">
+                {{ Scheduler.time }}
+              </div>
+            </div>
+            {% if Scheduler.state == "ON" %}
+            <div class="col-auto align-self-center">
+              <div class="badge bg-primary"></div>
+            </div>
+            {% endif %}
           </div>
         </div>
       </div>
+      {% endfor %}
     </div>
-    <div class="modal modal-blur fade" id="service-modal-success" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          <div class="modal-status bg-success"></div>
-          <div class="modal-body text-center py-4">
-            <!-- Download SVG icon from http://tabler-icons.io/i/circle-check -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-green icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="9" /><path d="M9 12l2 2l4 -4" /></svg>
-            <h3>成功</h3>
-            <input type="hidden" id="service_start_name" />
-            <div class="text-muted" id="service_finished_str">服务已执行完成！</div>
-          </div>
-          <div class="modal-footer">
-            <div class="w-100">
-              <div class="row">
-                <div class="col"><a href="#" class="btn btn-success w-100" data-bs-dismiss="modal">
-                    确定
-                  </a></div>
-              </div>
-            </div>
-          </div>
-        </div>
+  </div>
+</div>
+{% else %}
+<div class="page-body">
+  <div class="container-xl d-flex flex-column justify-content-center">
+    <div class="empty">
+      <div class="empty-img"><img src="./static/img/sign_in.svg" height="128" alt="">
       </div>
+      <p class="empty-title">没有服务</p>
+      <p class="empty-subtitle text-muted">
+        没有开启任何后台服务。
+      </p>
     </div>
-    <div class="modal modal-blur fade" id="modal-rename" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">未识别转移</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
+  </div>
+</div>
+{% endif %}
+<div class="modal modal-blur fade" id="modal-nametest" tabindex="-1" role="dialog" aria-hidden="true"
+  data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">名称识别测试</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="overflow: hidden">
+        <div class="row">
+          <div class="col">
             <div class="mb-3">
-              <label class="form-label">路径</label>
-              <select class="form-select" id="rename_path">
-                <option value="" selected>请选择</option>
-              </select>
-              <div class="invalid-feedback" id="rename_retmsg"></div>
-            </div>
-            <label class="form-label">类型</label>
-            <div class="form-selectgroup-boxes row mb-3">
-              <div class="col-lg-4">
-                <label class="form-selectgroup-item">
-                  <input type="radio" name="rename_type" value="MOV" class="form-selectgroup-input" checked>
-                  <span class="form-selectgroup-label d-flex align-items-center p-3">
-                    <span class="me-3">
-                      <span class="form-selectgroup-check"></span>
-                    </span>
-                    <span class="form-selectgroup-label-content">
-                      <span class="form-selectgroup-title strong mb-1">电影</span>
-                    </span>
-                  </span>
-                </label>
-              </div>
-              <div class="col-lg-4">
-                <label class="form-selectgroup-item">
-                  <input type="radio" name="rename_type" value="TV" class="form-selectgroup-input">
-                  <span class="form-selectgroup-label d-flex align-items-center p-3">
-                    <span class="me-3">
-                      <span class="form-selectgroup-check"></span>
-                    </span>
-                    <span class="form-selectgroup-label-content">
-                      <span class="form-selectgroup-title strong mb-1">电视剧</span>
-                    </span>
-                  </span>
-                </label>
-              </div>
-              <div class="col-lg-4">
-                <label class="form-selectgroup-item">
-                  <input type="radio" name="rename_type" value="ANIME" class="form-selectgroup-input">
-                  <span class="form-selectgroup-label d-flex align-items-center p-3">
-                    <span class="me-3">
-                      <span class="form-selectgroup-check"></span>
-                    </span>
-                    <span class="form-selectgroup-label-content">
-                      <span class="form-selectgroup-title strong mb-1">动漫</span>
-                    </span>
-                  </span>
-                </label>
-              </div>
+              <label class="form-label">资源名称 <span class="form-help"
+                  title="用于测试名称识别情况，无法识别请查询TMDB后酌情添加自定义识别词" data-bs-toggle="tooltip">?</span></label>
+              <input type="text" value="" id="test_name" class="form-control" placeholder="种子名/文件名等">
             </div>
           </div>
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-lg-6">
-                <div class="mb-3">
-                  <label class="form-label">标题</label>
-                  <input type="text" id="rename_title" class="form-control">
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="mb-3">
-                  <label class="form-label">年份</label>
-                  <input type="text" id="rename_year" class="form-control">
-                </div>
-              </div>
-              <div class="col-lg-12">
-                <div>
-                  <label class="form-label">TMDB ID</label>
-                  <input type="text" id="rename_tmdb" class="form-control">
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <a href="javascript:del_rename_path()" class="btn btn-link me-auto">
-              删除
-            </a>
-            <input type="button" id="rename_btn" class="btn btn-primary" value="转移">
+        </div>
+        <div class="row">
+          <div class="col">
+            <custom-chips id="test_result"></custom-chips>
           </div>
         </div>
       </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-link me-auto" data-bs-dismiss="modal">取消</button>
+        <button id="nametest_btn" class="btn btn-primary">识别</button>
+      </div>
     </div>
-    <div class="modal modal-blur fade" id="modal-config" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">配置文件</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  </div>
+</div>
+<div class="modal modal-blur fade" id="modal-ruletest" tabindex="-1" role="dialog" aria-hidden="true"
+  data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">过滤规则测试</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-lg-7">
+            <div class="mb-3">
+              <label class="form-label required">标题</label>
+              <input type="text" value="" id="test_title" class="form-control" placeholder="种子名称">
+            </div>
           </div>
-          <div class="modal-body" id="editor">
+          <div class="col-lg-2">
+            <div class="mb-3">
+              <label class="form-label required">大小(GB)</label>
+              <input type="text" value="" id="test_size" class="form-control" placeholder="种子大小">
+            </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn me-auto" data-bs-dismiss="modal">关闭</button>
-            <button type="button" id="save_config_btn" class="btn btn-primary">保存</button>
+          <div class="col-lg-3">
+            <div class="mb-3">
+              <label class="form-label required">过滤规则</label>
+              <select class="form-select" id="test_rulegroup">
+                  {% if RuleGroups %}
+                  <option value="0">请选择</option>
+                  {% for RuleGroup in RuleGroups %}
+                  <option value="{{ RuleGroup.id }}">{{ RuleGroup.name }}</option>
+                  {% endfor %}
+                  {% else %}
+                  <option value="0">未配置</option>
+                  {% endif %}
+                </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="mb-3">
+              <label class="form-label">副标题</label>
+              <textarea rows="3" id="test_subtitle" class="form-control" placeholder="种子描述"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="mb-3" id="testrule_result">
+            </div>
           </div>
         </div>
       </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-link me-auto" data-bs-dismiss="modal">取消</button>
+        <button id="ruletest_btn" class="btn btn-primary">测试</button>
+      </div>
     </div>
+  </div>
+</div>
+<div class="modal modal-blur fade" id="modal-nettest" tabindex="-1" role="dialog" aria-hidden="true"
+  data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">网络连通性测试</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-vcenter card-table">
+          <thead>
+            <tr>
+              <th>测试对象</th>
+              <th>连通性</th>
+              <th>耗时</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for target in SchedulerTasks[-2].targets %}
+            <tr>
+              <td>
+                <span>{{ target }}</span>
+                <input name="nettest_item" value="{{ target }}|{{ loop.index0 }}" type="hidden">
+              </td>
+              <td id="nettest_item_res_{{ loop.index0 }}"></td>
+              <td id="nettest_item_res_time_{{ loop.index0 }}"></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-link me-auto" data-bs-dismiss="modal">取消</button>
+        <button id="nettest_btn" class="btn btn-primary">测试</button>
+      </div>
     </div>
-    <!-- Libs JS -->
-    <!-- Tabler Core -->
-    <script src="../static/js/tabler.min.js"></script>
-    <script src="../static/js/jquery-3.3.1.min.js"></script>
-    <script src="../static/js/util.js"></script>
-    <script src="../static/js/demo.min.js"></script>
-    <script src="../static/js/ace.js"></script>
-    <script type="text/javascript">
-      // 初始化编辑器
-      ace.require("ace/ext/language_tools");
-      ace.require("ace/ext/static_highlight");
-      ace.require("ace/ext/beautify");
-      var editor = ace.edit("editor");
-      editor.setTheme("ace/theme/xcode");
-      editor.setFontSize(14);
-      editor.session.setMode("ace/mode/yaml");
-      editor.session.setUseWrapMode(true);
-      editor.setHighlightActiveLine(true);
-      editor.setOptions({
-              enableBasicAutocompletion: true,
-              enableSnippets: true,
-              enableLiveAutocompletion: true
-          });
-
-      //拉取列表
-      function refresh_rename_paths(){
-        ajax_post("rename_path", {}, function(ret){
-          paths = ret.paths;
-          $("#rename_path").empty();
-          $("#rename_path").append("<option value='' selected>请选择</option>");
-          for(var i=0; i<paths.length; i++){
-            $("#rename_path").append("<option value='"+ paths[i][0] + "|" + paths[i][1] +"'>" + paths[i][0] + "</option>");
-          }
-        });
-      }
-      //读取配置
-      function load_config(){
-        ajax_post("load_config", {}, function(ret){
-          config_str = ret.config_str;
-          editor.getSession().setValue(config_str)
-        });
-      }
-      //保存配置
-      function save_config(){
-        var data = {
-            "editer_str": editor.getSession().getValue()
-        };
-        $("#save_config_btn").text("保存中...");
-        $("#save_config_btn").attr("disabled", true);
-        ajax_post("save_config", data, function(ret){
-          $("#save_config_btn").attr("disabled", false);
-          $("#save_config_btn").text("保存");
-        });
-      }
-      // 显示服务提示框
-      function show_service_modal(id, name) {
-        if(id == "rename"){
-          refresh_rename_paths();
-          $('#modal-rename').modal('show');
-        }else if(id == "config"){
-          load_config();
-          $('#modal-config').modal('show');
-        }else{
-          $("#service_start_id").val(id);
-          $("#service_start_name").val(name);
-          $("#service_start_message").text("是否立即运行 " + name + "？");
-          $('#service-modal').modal('show');
-        }
-      }
-
-      // 运行服务
-      function run_scheduler(id){
-          var cmd = "sch";
-          var data = { "item": id };
-          ajax_post(cmd, data, function(ret){
-              item = $("#service_start_name").val();;
-              $("#service_finished_str").text(item + " 已执行完成！");
-              $("#service-modal-success").modal('show');
-          });
-      }
-
-      //手动转移
-      function manual_rename(){
-        type = $('input:radio[name=rename_type]:checked').val();
-        path = $("#rename_path").val();
-        tmdb = $("#rename_tmdb").val();
-        title = $("#rename_title").val();
-        year = $("#rename_year").val();
-
-        if(path == ""){
-          $("#rename_path").addClass("is-invalid");
-          return;
-        }else{
-          $("#rename_path").removeClass("is-invalid");
-        }
-
-        if(tmdb == ""){
-          if(title == ""){
-            $("#rename_title").addClass("is-invalid");
-            return;
-          }else{
-            $("#rename_title").removeClass("is-invalid");
-          }
-
-          if(year == "" || isNaN(year)){
-            $("#rename_year").addClass("is-invalid");
-            return;
-          }else{
-            $("#rename_year").removeClass("is-invalid");
-          }
-        }else{
-          if(isNaN(tmdb)){
-            $("#rename_tmdb").addClass("is-invalid");
-            return;
-          }else{
-            $("#rename_tmdb").removeClass("is-invalid");
-          }
-        }
-        // 开始处理
-        var data = { "path": path, "type": type, "title": title, "year": year, "tmdb": tmdb};
-        $("#rename_btn").attr("disabled", true);
-        $("#rename_btn").val("处理中...");
-        $("#rename_retmsg").hide()
-        ajax_post("rename", data, function(ret){
-          $("#rename_btn").attr("disabled", false);
-          $("#rename_btn").val("转移");
-          if(ret.retcode == 0){
-            //处理成功
-            refresh_rename_paths();
-          }else{
-            //处理失败
-            regmsg = ret.retmsg;
-            $("#rename_retmsg").show()
-            $("#rename_retmsg").text(regmsg)
-          }
-        });
-      }
-
-      //删除路径
-      function del_rename_path(){
-        path = $("#rename_path").val();
-        if(path == ""){
-          $("#rename_path").addClass("is-invalid");
-          return;
-        }else{
-          $("#rename_path").removeClass("is-invalid");
-        }
-        var cmd = "del_rename_path";
-        var data = { "path": path };
-        ajax_post(cmd, data, function(ret){
-            refresh_rename_paths();
-        });
-      }
-
-      //绑定事件
-      $(document).ready(function(){
-        //服务模态框事件
-        $("#service_start_btn").click(function(){
-            $('#service-modal').modal('hide');
-            run_scheduler($("#service_start_id").val());
-        });
-        //转移按钮
-        $("#rename_btn").click(function(){
-            manual_rename();
-        });
-        //保存配置按钮
-        $("#save_config_btn").click(function(){
-            save_config();
+  </div>
+</div>
+<div class="modal modal-blur fade" id="modal-backup" tabindex="-1" role="dialog" aria-hidden="true"
+  data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">备份&恢复</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form class="dropzone" id="back_file" action="/upload">
+          <div class="fallback">
+            <input name="file" type="file" accept="*.zip" />
+          </div>
+          <div class="dz-message">
+            <h3 class="dropzone-msg-title">上传备份文件</h3>
+            <span class="dropzone-msg-desc">点击或者拖动备份文件到此处</span>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button id="backup_btn" class="btn btn-primary">备份当前配置</button>
+        <button id="restore_btn" class="btn btn-danger">恢复配置</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  // 显示服务提示框
+  function show_service_modal(id, name) {
+    if (id === "nametest") {
+      $('#modal-nametest').modal('show');
+    } else if (id === "ruletest") {
+      $('#modal-ruletest').modal('show');
+    } else if (id === "nettest") {
+      $('[id^="nettest_item_res"]').empty();
+      $('#modal-nettest').modal('show');
+    } else if (id === "blacklist") {
+      show_confirm_modal("清理文件整理缓存后，已转移过的文件允许重新转移（包括识别错误的文件），是否确认？", function () {
+        hide_confirm_modal();
+        ajax_post("truncate_blacklist", {}, function (ret) {
+          show_success_modal("文件缓存清理完成！");
         });
       });
-    </script>
-  </body>
-</html>
+    } else if (id === "rsshistory") {
+      show_confirm_modal("清理RSS缓存后，已订阅下载但未入库的资源可能会被重新下载，是否确认？", function () {
+        hide_confirm_modal();
+        ajax_post("truncate_rsshistory", {}, function (ret) {
+          show_success_modal("RSS缓存清理完成！");
+        });
+      });
+    } else if (id === "backup") {
+      $('#modal-backup').modal('show');
+    } else {
+      show_ask_modal("是否立即运行 " + name + "？", function () {
+        hide_ask_modal();
+        run_scheduler(id, name);
+      });
+    }
+  }
+
+  // 运行服务
+  function run_scheduler(id, name) {
+    const data = {"item": id};
+    ajax_post("sch", data, function (ret) {
+      show_success_modal(`${name} 服务启动成功，正在后台运行`);
+    });
+  }
+
+  // 名称测试
+  $("#nametest_btn").unbind("click").click(function () {
+    name_test($(this));
+  });
+
+  // 规则测试
+  $("#ruletest_btn").unbind("click").click(function () {
+    rule_test($(this));
+  });
+
+  // 网络测试
+  $("#nettest_btn").unbind("click").click(async function () {
+    let btn_obj = $(this);
+    let url_indexs = select_GetHiddenVAL("nettest_item");
+    let nettest_count_total = url_indexs.length;
+    let nettest_count_finished = 0;
+    btn_obj.text("测试中...").attr("disabled", true);
+    for (let url_index of url_indexs){
+      net_test_one(url_index, ret=>{
+        if (ret) {
+          nettest_count_finished++;
+          if (nettest_count_finished >= nettest_count_total) {
+            btn_obj.text("测试").attr("disabled", false);
+          }
+        }
+      });
+    }
+  });
+
+  // 备份
+  $("#backup_btn").unbind("click").click(function () {
+    $(this).text("备份中...").attr("disabled", true);
+    ajax_backup(function () {
+      $(this).attr("disabled", false).text("备份当前配置");
+    });
+  });
+
+  // 恢复备份
+  $("#restore_btn").unbind("click").click(function () {
+    if (!backup_dropzone || !backup_dropzone.files || !backup_dropzone.files[0]) {
+      return;
+    }
+    $(this).text("恢复中...").attr("disabled", true);
+    ajax_post("restory_backup", { file_name: backup_dropzone.files[backup_dropzone.files.length - 1].name }, function (ret) {
+      $(this).attr("disabled", false).text("恢复配置");
+      $("#modal-backup").modal('hide');
+      if (ret.code === 0) {
+        show_success_modal("备份恢复成功，请重启系统生效！");
+      } else {
+        show_fail_modal(`备份恢复失败：${ret.msg}`, function() {
+          $("#modal-backup").modal('show');
+        });
+      }
+    });
+  });
+
+  //名称识别测试
+  function name_test(btn_obj) {
+    const name_obj = $('#test_name');
+    const name = name_obj.val();
+    if (!name) {
+      name_obj.addClass("is-invalid");
+      return;
+    } else {
+      name_obj.removeClass("is-invalid");
+    }
+    btn_obj.text("识别中...").attr("disabled", true);
+    media_name_test(name, "test_result", function () {
+      btn_obj.text("识别").attr("disabled", false);
+    });
+  }
+
+  //过滤规则测试
+  function rule_test(btn_obj) {
+    const title_obj = $("#test_title");
+    const title = title_obj.val();
+    if (!title) {
+      title_obj.addClass("is-invalid");
+      return;
+    } else {
+      title_obj.removeClass("is-invalid");
+    }
+    const size_obj = $("#test_size");
+    const size = size_obj.val();
+    if (!size || isNaN(size)) {
+      size_obj.addClass("is-invalid");
+      return;
+    } else {
+      size_obj.removeClass("is-invalid");
+    }
+    const rulegroup_obj = $("#test_rulegroup");
+    const rulegroup = rulegroup_obj.val();
+    if (rulegroup === "0") {
+      rulegroup_obj.addClass("is-invalid");
+      return;
+    } else {
+      rulegroup_obj.removeClass("is-invalid");
+    }
+
+    const subtitle = $("#test_subtitle").val();
+    btn_obj.text("测试中...").attr("disabled", true);
+    const params = {
+      "title": title,
+      "size": size,
+      "rulegroup": rulegroup,
+      "subtitle": subtitle
+    };
+    ajax_post("rule_test", params, function (ret) {
+      btn_obj.text("测试").attr("disabled", false);
+      if (ret.code === 0) {
+        let content = "";
+        if (ret.flag) {
+          content += `<span class="badge bg-green me-1 mb-1">${ret.text}</span>
+                      <span class="badge badge-outline text-blue me-1 mb-1" title="命中规则在规则组内的序号">优先级：${ret.order}</span>`;
+        } else {
+          content += `<span class="badge bg-red me-1 mb-1">${ret.text}</span>`;
+        }
+        $("#testrule_result").empty().append(content);
+      }
+    });
+  }
+
+  // 单个网络测试
+  function net_test_one(url_index, callBack) {
+    if (!url_index) {
+      return;
+    }
+    let url = url_index.split("|")[0];
+    let index = url_index.split("|")[1];
+    ajax_post("net_test", decodeURI(url), function (ret) {
+      if (ret.res) {
+        $(`#nettest_item_res_${index}`).html('<span class="badge bg-green me-1 mb-1">是</span>');
+        $(`#nettest_item_res_time_${index}`).html(`<span class="text-green">${ret.time}</span>`);
+      } else {
+        $(`#nettest_item_res_${index}`).html('<span class="badge bg-red me-1 mb-1">否</span>');
+        $(`#nettest_item_res_time_${index}`).html(`<span class="text-red">${ret.time}</span>`);
+      }
+      callBack(true)
+    });
+  }
+
+  // 初始化DropZone
+  backup_dropzone = new Dropzone("#back_file");
+  backup_dropzone.options.acceptedFiles = ".zip";
+</script>
